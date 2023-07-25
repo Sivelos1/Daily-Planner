@@ -10,7 +10,7 @@
 
 ## Installation
 
-Click on [this URL](#) to visit the page.
+Click on [this URL](https://sivelos1.github.io/Daily-Planner/) to visit the page.
 
 ## Usage
 

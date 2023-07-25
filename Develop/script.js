@@ -83,22 +83,71 @@ $(function () {
 
   var now = dayjs();
 
+  var savedData = {
+    [0]:'blah blah blah'
+  }
 
-  for (let index = 0; index < 24; index++) {
+  var savedDataIdentifier = "plannerTasks"
+
+  var AddTaskToSavedData = function(slot, text){
+    savedData[slot] = text;
+  }
+
+  var LoadSavedData = function(){
+    console.log("Loading saved data from localstorage");
+    if(localStorage.getItem(savedDataIdentifier) === null || localStorage.getItem(savedDataIdentifier) === undefined){
+      savedData = {
+        [0]:'blah blah blah'
+      }
+      SaveSavedData();
+    }
+    savedData = JSON.parse(localStorage.getItem(savedDataIdentifier));
+    console.log(savedData);
+    console.log("Writing data to time blocks");
+    iterateBlocks(function(element,index){
+      if(savedData[index] !== null || savedData[index] !== undefined){
+        var textArea = $('#hour-'+index+" > textarea");
+        var t = savedData[index];
+        textArea.val(t);
+
+      }
+    });
+  }
+
+  var SaveSavedData = function(){
+    var asString = JSON.stringify(savedData);
+    localStorage.setItem(savedDataIdentifier, asString);
+  }
+
+  for (let index = 9; index < 18; index++) {
     body.append(createBlock(dayjs().hour(index)));
   }
   var currentDay = $('#currentDay');
   var todaysDate = now.format('dddd, MMMM D');
   currentDay.text(todaysDate);
 
-  for (let index = 0; index < 24; index++) {
-    const element = $('#hour-'+index);
+  var iterateBlocks = function(func){
+    for (let index = 0; index < 24; index++) {
+      const element = $('#hour-'+index);
+      if(element !== null && element !== undefined){
+        func(element, index);
+      }
+    }
+  }
+
+  iterateBlocks(function(element, index){
     element.on('click', 'button', function(event){
       event.preventDefault();
-      var textArea = $('#hour-'+index+" > button");
-      console.log($(textArea.value()));
-      
+      var textArea = $('#hour-'+index+" > textarea");
+      var task = $(textArea).val();
+
+      console.log("Saving task \'"+task+"\' for time block "+index);
+      AddTaskToSavedData(index, task);
+      SaveSavedData();
     });
-  }
+  });
+
+  
+  LoadSavedData();
   
 });

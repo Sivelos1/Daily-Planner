@@ -1,3 +1,4 @@
+![image](https://github.com/Sivelos1/Daily-Planner/assets/21207337/a0c3a5d8-6596-42bc-9ae8-88cf876788c5)
 # Daily Planner
  An applet that allows you to plan events on an hourly basis for the day.
  
